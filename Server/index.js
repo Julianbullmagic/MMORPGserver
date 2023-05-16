@@ -24,6 +24,10 @@ io.on('connection', (socket) => {
 socket.on('disconnect', () => {
   console.log('user disconnected');
 });
+
+socket.on("connect_error", (err) => {
+  console.log(`connect_error due to ${err.message}`);
+});
 });
 
 server.listen(3000, () => {
