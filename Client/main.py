@@ -9,10 +9,6 @@ sio = socketio.Client()
 sio.connect('https://mmorpgserver.onrender.com/')
 print('my sid is', sio.sid)
 
-@sio.on('getState')
-def on_get_State():
-    print('getting state')
-    sio.emit('returning state', {'player': 'bar'})
 
 
 class App:
@@ -32,6 +28,11 @@ class App:
         self.cache = Cache()
         self.player = Player(self)
         self.scene = Scene(self)
+
+    @sio.on('getState')
+    def on_get_State():
+        print('getting state')
+        sio.emit('returning state', {'player': self.player})
 
     def update(self):
         self.scene.update()

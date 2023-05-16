@@ -23,16 +23,14 @@ io.on('connection', (socket) => {
 socket.on('disconnect', () => {
   console.log('user disconnected');
 });
-
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
+});
+socket.on('returning state', (data) => {
+  console.log("returning state",data)
 });
 });
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
-});
-
-io.on('returning state', (data) => {
-  console.log("returning state",data)
 });
