@@ -6,9 +6,8 @@ from scene import Scene
 import socketio
 
 sio = socketio.Client()
-sio.connect('http://localhost:5000')
+sio.connect('https://mmorpgserver.onrender.com/')
 print('my sid is', sio.sid)
-sio.emit('my message', {'foo': 'bar'})
 
 @sio.on('getState')
 def on_get_State(data):
