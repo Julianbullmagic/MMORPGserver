@@ -3,6 +3,17 @@ from settings import *
 from cache import Cache
 from player import Player
 from scene import Scene
+import socketio
+
+sio = socketio.Client()
+sio.connect('http://localhost:5000')
+print('my sid is', sio.sid)
+sio.emit('my message', {'foo': 'bar'})
+
+@sio.on('getState')
+def on_get_State(data):
+    print('getting state')
+    sio.emit('returning state', {'player': 'bar'})
 
 
 class App:
