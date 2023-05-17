@@ -3,13 +3,8 @@ from settings import *
 from cache import Cache
 from player import Player
 from scene import Scene
+import json
 import socketio
-
-sio = socketio.Client()
-sio.connect('https://mmorpgserver.onrender.com/')
-print('my sid is', sio.sid)
-
-
 
 class App:
     def __init__(self):
@@ -30,9 +25,6 @@ class App:
         self.player = Player(self)
         self.scene = Scene(self)
 
-    def on_get_state(self):
-        print('getting state',self)
-        # sio.emit('returning state', {'player': self})
 
     def update(self):
         self.scene.update()
@@ -67,12 +59,18 @@ class App:
             self.draw()
 
 
-if __name__ == '__main__':
-    app = App()
-    app.run()
-
+app = App()
+sio = socketio.Client()
+sio.connect('https://mmorpgserver.onrender.com/')
+print('my sid is', sio.sid)
 
 @sio.on('getState')
 def on_on_getting_state():
-    print("getting state")
-    app.on_get_state()
+        print("getting state",app.player.offset,app.player.angle)
+        playerdata = {
+            "offsetx": app.player.offset[0],
+            "offsety": app.player.offset[1],
+            "angle": app.player.angle
+                }
+        sio.emit('returning state', json.dumps(playerdata))
+app.run()

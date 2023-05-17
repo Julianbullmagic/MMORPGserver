@@ -18,17 +18,26 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  players.push({id=socket.id})
   socket.on('chat message', (msg) => {
   console.log('message: ' + msg);
 });
 socket.on('disconnect', () => {
   console.log('user disconnected');
+  players.filter(player=>player.id!==socket.id)
 });
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
 });
 socket.on('returning state', (data) => {
-  console.log("returning state",data)
+  console.log("returning state",data,players)
+  for (let player of players){
+    if(socket.id==player.id){
+      player.x=data.offsetx
+      player.y=data.offsety
+      player.angle=data.angle
+    }
+  }
 });
 });
 
