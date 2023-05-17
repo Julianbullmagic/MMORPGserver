@@ -19,7 +19,8 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('player joining', (data) => {
-    players.push({id:data.id})
+    let parseddata=JSON.parse(data)
+    players.push({id:parseddata.id})
   });
 socket.on('disconnect', () => {
   console.log('user disconnected');

@@ -67,7 +67,7 @@ sio.connect('https://mmorpgserver.onrender.com/')
 print('my sid is', sio.sid)
 app.player.id=sio.sid
 print('app.player.id', app.player.id)
-sio.emit('player joining', {id:app.player.id})
+sio.emit('player joining', json.dumps({"id":app.player.id}))
 
 @sio.on('getState')
 def on_getting_state():
