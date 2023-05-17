@@ -31,11 +31,12 @@ socket.on("connect_error", (err) => {
 });
 socket.on('returning state', (data) => {
   console.log("returning state",data,players)
+  let parseddata=JSON.parse(data)
   for (let player of players){
     if(socket.id==player.id){
-      player.x=data.offsetx
-      player.y=data.offsety
-      player.angle=data.angle
+      player.x=parseddata.offsetx
+      player.y=parseddata.offsety
+      player.angle=parseddata.angle
     }
   }
 });
