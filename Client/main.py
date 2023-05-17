@@ -2,6 +2,7 @@ import sys
 from settings import *
 from cache import Cache
 from player import Player
+from anotherplayer import AnotherPlayer
 from scene import Scene
 import json
 import socketio
@@ -64,6 +65,9 @@ app = App()
 sio = socketio.Client()
 sio.connect('https://mmorpgserver.onrender.com/')
 print('my sid is', sio.sid)
+app.player.id=sio.sid
+print('app.player.id', app.player.id)
+sio.emit('player joining', {id:app.player.id})
 
 @sio.on('getState')
 def on_getting_state():
@@ -72,10 +76,22 @@ def on_getting_state():
             "offsetx": app.player.offset[0],
             "offsety": app.player.offset[1],
             "angle": app.player.angle,
+            "id":app.player.id
                 }
         sio.emit('returning state', json.dumps(playerdata))
 @sio.on('updateState')
 def on_update_state(data):
-        print("updating state",json.loads(data))
-        app.players=json.loads(data)
+        tempplayers=json.loads(data)
+        app.players=[]
+        for player in tempplayers:
+            print(player['id'],app.player.id,"ids")
+            if player['id']==app.player.id:
+                continue
+            newplayer=AnotherPlayer(app)
+            newplayer.offset=vec2(player['x'],player['y'])
+            newplayer.angle=player['angle']
+            print(newplayer)
+            app.players.append(newplayer)
+            print(app.players,"app.players")
+
 app.run()

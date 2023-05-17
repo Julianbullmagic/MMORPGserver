@@ -8,9 +8,8 @@ class Player(BaseEntity):
     def __init__(self, app, name='player'):
         super().__init__(app, name)
         self.group.change_layer(self, CENTER.y)
-
+        self.id=" "
         self.rect = self.image.get_rect(center=CENTER)
-
         self.offset = vec2(0)
         self.inc = vec2(0)
         self.prev_inc = vec2(0)

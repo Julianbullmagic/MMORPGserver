@@ -18,10 +18,9 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  players.push({id:socket.id})
-  socket.on('chat message', (msg) => {
-  console.log('message: ' + msg);
-});
+  socket.on('player joining', (data) => {
+    players.push({id:data.id})
+  });
 socket.on('disconnect', () => {
   console.log('user disconnected');
   players.filter(player=>player.id!==socket.id)
