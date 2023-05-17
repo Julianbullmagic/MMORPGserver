@@ -7,6 +7,7 @@ const io = new Server(server);
 setInterval(getState, 2000)
 
 function getState(){
+  console.log("getting state")
   io.emit('getState')
 }
 
