@@ -30,15 +30,15 @@ socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
 });
 socket.on('returning state', (data) => {
-  console.log("returning state",data,players)
   let parseddata=JSON.parse(data)
   for (let player of players){
-    if(socket.id==player.id){
+    if(parseddata.id==player.id){
       player.x=parseddata.offsetx
       player.y=parseddata.offsety
       player.angle=parseddata.angle
     }
   }
+  console.log("returning state",data,players)
   io.emit('updateState',JSON.stringify(players))
 });
 });

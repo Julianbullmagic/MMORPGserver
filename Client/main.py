@@ -6,6 +6,7 @@ from anotherplayer import AnotherPlayer
 from scene import Scene
 import json
 import socketio
+from entity import Entity
 
 class App:
     def __init__(self):
@@ -82,14 +83,16 @@ def on_getting_state():
 @sio.on('updateState')
 def on_update_state(data):
         tempplayers=json.loads(data)
+        for pl in app.players:
+            del pl
         app.players=[]
         for player in tempplayers:
             print(player['id'],app.player.id,"ids")
             if player['id']==app.player.id:
                 continue
-            newplayer=AnotherPlayer(app)
-            newplayer.offset=vec2(player['x'],player['y'])
-            newplayer.angle=player['angle']
+            newplayer=Entity(self.app, "kitty", vec2(player['x'],player['y']))
+            # newplayer.offset=vec2(player['x'],player['y'])
+            # newplayer.angle=player['angle']
             print(newplayer)
             app.players.append(newplayer)
             print(app.players,"app.players")
