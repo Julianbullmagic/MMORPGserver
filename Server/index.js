@@ -39,6 +39,7 @@ socket.on('returning state', (data) => {
       player.angle=parseddata.angle
     }
   }
+  io.emit('updateState',JSON.stringify(players))
 });
 });
 

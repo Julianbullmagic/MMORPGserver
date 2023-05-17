@@ -12,6 +12,7 @@ class App:
         pg.display.set_caption('MMORPG')
         self.clock = pg.time.Clock()
         self.time = 0
+        self.players = []
         self.delta_time = 0.01
         self.anim_trigger = False
         self.anim_event = pg.USEREVENT + 0
@@ -65,12 +66,16 @@ sio.connect('https://mmorpgserver.onrender.com/')
 print('my sid is', sio.sid)
 
 @sio.on('getState')
-def on_on_getting_state():
+def on_getting_state():
         print("getting state",app.player.offset,app.player.angle)
         playerdata = {
             "offsetx": app.player.offset[0],
             "offsety": app.player.offset[1],
-            "angle": app.player.angle
+            "angle": app.player.angle,
                 }
         sio.emit('returning state', json.dumps(playerdata))
+@sio.on('updateState')
+def on_update_state(data):
+        print("updating state",json.loads(data))
+        app.players=json.loads(data)
 app.run()
