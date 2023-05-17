@@ -13,7 +13,8 @@ print('my sid is', sio.sid)
 
 class App:
     def __init__(self):
-        self.screen = pg.display.set_mode(RES)
+        self.screen = pg.display.set_mode(RES,pg.RESIZABLE)
+        pg.display.set_caption('MMORPG')
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0.01
@@ -29,10 +30,9 @@ class App:
         self.player = Player(self)
         self.scene = Scene(self)
 
-    @sio.on('getState')
-    def on_get_State():
-        print('getting state')
-        sio.emit('returning state', {'player': self.player})
+    def on_get_state(self):
+        print('getting state',self)
+        # sio.emit('returning state', {'player': self})
 
     def update(self):
         self.scene.update()
@@ -70,3 +70,9 @@ class App:
 if __name__ == '__main__':
     app = App()
     app.run()
+
+
+@sio.on('getState')
+def on_on_getting_state():
+    print("getting state")
+    app.on_get_state()

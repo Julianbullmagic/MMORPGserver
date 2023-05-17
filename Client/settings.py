@@ -2,7 +2,7 @@ import pygame as pg
 
 vec2 = pg.math.Vector2
 
-RES = WIDTH, HEIGHT = vec2(1600, 900)
+RES = WIDTH, HEIGHT = vec2(1500, 800)
 # RES = WIDTH, HEIGHT = vec2(1920, 1080)
 CENTER = H_WIDTH, H_HEIGHT = RES // 2
 TILE_SIZE = 250  #
@@ -43,8 +43,8 @@ ENTITY_SPRITE_ATTRS = {
 }
 
 # stacked sprites settings
-'''mask_layer - index of the layer from which we get the mask for collisions 
-and is also cached for all angles of the object, set manually or by default 
+'''mask_layer - index of the layer from which we get the mask for collisions
+and is also cached for all angles of the object, set manually or by default
 equal to num_layer // 2'''
 
 STACKED_SPRITE_ATTRS = {
@@ -109,21 +109,3 @@ STACKED_SPRITE_ATTRS = {
         'mask_layer': 4,
     },
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
