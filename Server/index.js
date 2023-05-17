@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  players.push({id=socket.id})
+  players.push({id:socket.id})
   socket.on('chat message', (msg) => {
   console.log('message: ' + msg);
 });
