@@ -67,7 +67,7 @@ class AnotherPlayerEntity(BaseEntity):
     def update(self):
         currenttime=time.get_ticks()%50
         hu=vec2(self.lastpos[0]+self.incrementx*currenttime,self.lastpos[1]+self.incrementy*currenttime)
-        print(currenttime,hu,"yes")
+        # print(currenttime,hu,"yes")
         super().update()
         self.transform()
         self.set_rect()
