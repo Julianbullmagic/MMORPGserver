@@ -52,10 +52,11 @@ class Entity(BaseEntity):
 
 
 class AnotherPlayerEntity(BaseEntity):
-    def __init__(self, app, name, pos):
+    def __init__(self, app, name, pos, playername):
         super().__init__(app, name)
         self.pos = vec2(pos)
         self.player = app.player
+        self.playername=playername
         self.y_offset = vec2(0, self.attrs['y_offset'])
         self.screen_pos = vec2(0)
 

@@ -17,6 +17,7 @@ class App:
         self.clock = pg.time.Clock()
         self.time = 0
         self.players = []
+        self.playernames = []
         self.delta_time = 0.01
         self.anim_trigger = False
         self.anim_event = pg.USEREVENT + 0
@@ -33,7 +34,6 @@ class App:
 
     def update(self):
         self.scene.update()
-        print(len(self.main_group.sprites()), "main group")
         self.main_group.update()
         pg.display.set_caption(f'{self.clock.get_fps(): .1f}')
         self.delta_time = self.clock.tick()
@@ -88,19 +88,17 @@ def on_getting_state():
 @sio.on('updateState')
 def on_update_state(data):
         tempplayers=json.loads(data)
-        for pl in app.players:
-            pl.kill()
-            del pl
-        app.players=[]
         print(app.players)
         for player in tempplayers:
             if player['id']==app.player.id:
                 continue
-            pos = vec2(player['x'],player['y'])
-            newplayer=AnotherPlayerEntity(app, name='kitty', pos=pos)
-            print(player,"player")
-            newplayer.pos(vec2(player['x'],player['y']))
-            # newplayer.offset=vec2(player['x'],player['y'])
-            # newplayer.angle=player['angle']
-            app.players.append(newplayer)
+            if player['id'] not in app.playernames:
+                app.playernames.append(player['id'])
+                pos = vec2(player['x'],player['y'])
+                newplayer=AnotherPlayerEntity(app, name='kitty', pos=pos, playername=player['id'])
+                app.players.append(newplayer)
+            for play in app.players:
+                if play.playername==player['id']:
+                    play.pos=vec2(player['x'],player['y'])
+                    play.angle=player['angle']
 app.run()

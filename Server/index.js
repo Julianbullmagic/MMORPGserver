@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-setInterval(getState, 2000)
+setInterval(getState, 500)
 
 function getState(){
   console.log("getting state",players)
