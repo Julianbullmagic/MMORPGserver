@@ -26,7 +26,15 @@ io.on('connection', (socket) => {
   });
 socket.on('disconnect', () => {
   console.log('user disconnected',players,playerid);
-  players.filter(player=>player.id!=playerid)
+let newplayers=[]
+for (let player of players){
+  if(player.id==playerid){
+    continue
+  }else{
+    newplayers.push(player)
+  }
+  players=newplayers
+}
 });
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
