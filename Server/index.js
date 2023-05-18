@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     players.push({id:parseddata.id})
   });
 socket.on('disconnect', () => {
-  console.log('user disconnected');
+  console.log('user disconnected',player.id,playerid);
   players.filter(player=>player.id!==playerid)
 });
 socket.on("connect_error", (err) => {

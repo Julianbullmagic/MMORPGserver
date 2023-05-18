@@ -85,14 +85,18 @@ def on_update_state(data):
         tempplayers=json.loads(data)
         for pl in app.players:
             del pl
+        print("players1",app.players)
         app.players=[]
+        print("players2",app.players)
         for player in tempplayers:
             print(player['id'],app.player.id,"ids")
             if player['id']==app.player.id:
                 continue
+            pos = vec2(player['x'],player['y'])
             newplayer=Entity(app, name='kitty', pos=pos)
-            newplayer.offset=vec2(player['x'],player['y'])
-            newplayer.angle=player['angle']
+            self.main_group.update()
+            # newplayer.offset=vec2(player['x'],player['y'])
+            # newplayer.angle=player['angle']
             print(newplayer)
             app.players.append(newplayer)
             print(app.players,"app.players")
