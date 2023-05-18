@@ -28,13 +28,13 @@ socket.on('disconnect', () => {
   console.log('user disconnected',players,playerid);
 let newplayers=[]
 for (let player of players){
-  if(player.id==playerid){
-    continue
-  }else{
+  if(player.id!==playerid){
+    console.log(player.id,playerid)
     newplayers.push(player)
   }
   players=newplayers
 }
+console.log(players,"players after filter")
 });
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
