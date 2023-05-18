@@ -51,19 +51,27 @@ class Entity(BaseEntity):
         self.rect.center = self.screen_pos + self.y_offset
 
 
+class AnotherPlayerEntity(BaseEntity):
+    def __init__(self, app, name, pos):
+        super().__init__(app, name)
+        self.pos = vec2(pos)
+        self.player = app.player
+        self.y_offset = vec2(0, self.attrs['y_offset'])
+        self.screen_pos = vec2(0)
 
+    def update(self):
+        super().update()
+        self.transform()
+        self.set_rect()
+        self.change_layer()
 
+    def transform(self):
+        pos = self.pos - self.player.offset
+        pos = pos.rotate_rad(self.player.angle)
+        self.screen_pos = pos + CENTER
 
+    def change_layer(self):
+        self.group.change_layer(self, self.screen_pos.y)
 
-
-
-
-
-
-
-
-
-
-
-
-
+    def set_rect(self):
+        self.rect.center = self.screen_pos + self.y_offset

@@ -5,8 +5,10 @@ from player import Player
 from anotherplayer import AnotherPlayer
 from scene import Scene
 import json
+import sys
 import socketio
 from entity import Entity
+from entity import AnotherPlayerEntity
 
 class App:
     def __init__(self):
@@ -61,15 +63,17 @@ class App:
             self.get_time()
             self.update()
             self.draw()
+pos = vec2(3000,625)
 
 
 app = App()
+
 sio = socketio.Client()
 sio.connect('https://mmorpgserver.onrender.com/')
 print('my sid is', sio.sid)
-app.player.id=sio.sid
+app.player.id=sys.argv[1]
 print('app.player.id', app.player.id)
-sio.emit('player joining', json.dumps({"id":app.player.id}))
+sio.emit('player joining', json.dumps({"name":sys.argv[1]}))
 
 @sio.on('getState')
 def on_getting_state():
@@ -88,13 +92,15 @@ def on_update_state(data):
             pl.kill()
             del pl
         app.players=[]
+        print(app.players)
         for player in tempplayers:
             if player['id']==app.player.id:
                 continue
             pos = vec2(player['x'],player['y'])
-            newplayer=Entity(app, name='kitty', pos=pos)
+            newplayer=AnotherPlayerEntity(app, name='kitty', pos=pos)
+            print(player,"player")
+            newplayer.pos(vec2(player['x'],player['y']))
             # newplayer.offset=vec2(player['x'],player['y'])
             # newplayer.angle=player['angle']
             app.players.append(newplayer)
-
 app.run()

@@ -21,20 +21,11 @@ io.on('connection', (socket) => {
   let playerid=""
   socket.on('player joining', (data) => {
     let parseddata=JSON.parse(data)
-    playerid=parseddata.id
-    players.push({id:parseddata.id})
+    playerid=parseddata.name
+    players.push({id:parseddata.name})
   });
 socket.on('disconnect', () => {
-  console.log('user disconnected',players,playerid);
-let newplayers=[]
-for (let player of players){
-  if(player.id!==playerid){
-    console.log(player.id,playerid)
-    newplayers.push(player)
-  }
-  players=newplayers
-}
-console.log(players,"players after filter")
+  console.log('user disconnected');
 });
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
