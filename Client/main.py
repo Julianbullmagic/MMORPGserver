@@ -31,6 +31,7 @@ class App:
 
     def update(self):
         self.scene.update()
+        print(len(self.main_group.sprites()), "main group")
         self.main_group.update()
         pg.display.set_caption(f'{self.clock.get_fps(): .1f}')
         self.delta_time = self.clock.tick()
@@ -72,7 +73,7 @@ sio.emit('player joining', json.dumps({"id":app.player.id}))
 
 @sio.on('getState')
 def on_getting_state():
-        print("getting state",app.player.offset,app.player.angle)
+        # print("getting state",app.player.offset,app.player.angle)
         playerdata = {
             "offsetx": app.player.offset[0],
             "offsety": app.player.offset[1],
@@ -84,21 +85,16 @@ def on_getting_state():
 def on_update_state(data):
         tempplayers=json.loads(data)
         for pl in app.players:
+            pl.kill()
             del pl
-        print("players1",app.players)
         app.players=[]
-        print("players2",app.players)
         for player in tempplayers:
-            print(player['id'],app.player.id,"ids")
             if player['id']==app.player.id:
                 continue
             pos = vec2(player['x'],player['y'])
             newplayer=Entity(app, name='kitty', pos=pos)
-            self.main_group.update()
             # newplayer.offset=vec2(player['x'],player['y'])
             # newplayer.angle=player['angle']
-            print(newplayer)
             app.players.append(newplayer)
-            print(app.players,"app.players")
 
 app.run()
