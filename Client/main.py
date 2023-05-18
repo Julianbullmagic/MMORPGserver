@@ -63,8 +63,6 @@ class App:
             self.get_time()
             self.update()
             self.draw()
-pos = vec2(3000,625)
-
 
 app = App()
 
@@ -87,7 +85,9 @@ def on_getting_state():
         sio.emit('returning state', json.dumps(playerdata))
 @sio.on('updateState')
 def on_update_state(data):
+        print("updating state")
         tempplayers=json.loads(data)
+        print(tempplayers,"temp players")
         print(app.players)
         for player in tempplayers:
             if player['id']==app.player.id:
@@ -99,6 +99,12 @@ def on_update_state(data):
                 app.players.append(newplayer)
             for play in app.players:
                 if play.playername==player['id']:
+                    # play.lastpos=play.pos
                     play.pos=vec2(player['x'],player['y'])
+                    print(play.pos[0],play.pos[1],"pos")
+                    # play.incrementx=play.lastpos[0]-play.pos[0]
+                    # play.incrementx=play.incrementx/20
+                    # play.incrementy=play.lastpos[1]-play.pos[1]
+                    # play.incrementy=play.incrementy/20
                     play.angle=player['angle']
 app.run()

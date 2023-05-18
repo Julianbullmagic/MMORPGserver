@@ -1,5 +1,5 @@
 from settings import *
-
+from pygame import time
 
 class BaseEntity(pg.sprite.Sprite):
     def __init__(self, app, name):
@@ -55,12 +55,19 @@ class AnotherPlayerEntity(BaseEntity):
     def __init__(self, app, name, pos, playername):
         super().__init__(app, name)
         self.pos = vec2(pos)
+        self.lastpos = vec2(pos)
+        self.incrementx = 0
+        self.incrementy = 0
         self.player = app.player
+        self.app=app
         self.playername=playername
         self.y_offset = vec2(0, self.attrs['y_offset'])
         self.screen_pos = vec2(0)
 
     def update(self):
+        currenttime=time.get_ticks()%50
+        hu=vec2(self.lastpos[0]+self.incrementx*currenttime,self.lastpos[1]+self.incrementy*currenttime)
+        print(currenttime,hu,"yes")
         super().update()
         self.transform()
         self.set_rect()

@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-setInterval(getState, 500)
+setInterval(getState, 50)
 
 function getState(){
   console.log("getting state",players)
@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
   socket.on('player joining', (data) => {
     let parseddata=JSON.parse(data)
     playerid=parseddata.name
-    players.push({id:parseddata.name})
+    players.push({id:parseddata.name,x:0,y:0,angle:0})
   });
 socket.on('disconnect', () => {
   console.log('user disconnected');
