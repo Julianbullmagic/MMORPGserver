@@ -24,40 +24,6 @@ MAP = [
 MAP_SIZE = MAP_WIDTH, MAP_HEIGHT = vec2(len(MAP), len(MAP[0]))
 MAP_CENTER = MAP_SIZE / 2
 
-sio = socketio.Client()
-sio.connect('https://mmorpgserver.onrender.com/')
-print('my sid is', sio.sid)
-app.player.id=sio.sid
-print('app.player.id', app.player.id)
-sio.emit('player joining', json.dumps({"id":app.player.id}))
-
-@sio.on('getState')
-def on_getting_state():
-        print("getting state",app.player.offset,app.player.angle)
-        playerdata = {
-            "offsetx": app.player.offset[0],
-            "offsety": app.player.offset[1],
-            "angle": app.player.angle,
-            "id":app.player.id
-                }
-        sio.emit('returning state', json.dumps(playerdata))
-@sio.on('updateState')
-def on_update_state(data):
-        tempplayers=json.loads(data)
-        for pl in app.players:
-            del pl
-        app.players=[]
-        for player in tempplayers:
-            print(player['id'],app.player.id,"ids")
-            if player['id']==app.player.id:
-                continue
-            newplayer=AnotherPlayer(app)
-            newplayer.offset=vec2(player['x'],player['y'])
-            newplayer.angle=player['angle']
-            print(newplayer)
-            app.players.append(newplayer)
-            print(app.players,"app.players")
-
 
 class Scene:
     def __init__(self, app):
@@ -75,7 +41,7 @@ class Scene:
                 if name == 'player':
                     self.app.player.offset = pos * TILE_SIZE
                 elif name == 'kitty':
-                    print(pos,"pos")
+                    print(pos * TILE_SIZE,"pos")
                     Entity(self.app, name=name, pos=pos)
                 elif name == 'blue_tree':
                     TrnspStackedSprite(self.app, name=name, pos=rand_pos(pos), rot=rand_rot())
