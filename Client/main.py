@@ -99,12 +99,12 @@ def on_update_state(data):
                 app.players.append(newplayer)
             for play in app.players:
                 if play.playername==player['id']:
-                    # play.lastpos=play.pos
-                    play.pos=vec2(player['x'],player['y'])
-                    print(play.pos[0],play.pos[1],"pos")
-                    # play.incrementx=play.lastpos[0]-play.pos[0]
-                    # play.incrementx=play.incrementx/20
-                    # play.incrementy=play.lastpos[1]-play.pos[1]
-                    # play.incrementy=play.incrementy/20
+                    play.lastpos=play.pos
+                    play.pos=vec2(int(player['x']),int(player['y']))
+                    play.incrementx=play.lastpos[0]-play.pos[0]
+                    play.incrementx=play.incrementx/20
+                    play.incrementy=play.lastpos[1]-play.pos[1]
+                    play.incrementy=play.incrementy/20
+                    print(play.incrementx,play.incrementy,"increament")
                     play.angle=player['angle']
 app.run()
