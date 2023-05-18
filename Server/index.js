@@ -18,13 +18,15 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  let playerid=""
   socket.on('player joining', (data) => {
     let parseddata=JSON.parse(data)
+    playerid=parseddata.id
     players.push({id:parseddata.id})
   });
 socket.on('disconnect', () => {
   console.log('user disconnected');
-  players.filter(player=>player.id!==socket.id)
+  players.filter(player=>player.id!==parseddata.id)
 });
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
