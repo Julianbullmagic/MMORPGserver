@@ -36,7 +36,7 @@ class App:
         self.scene.update()
         self.main_group.update()
         pg.display.set_caption(f'{self.clock.get_fps(): .1f}')
-        self.delta_time = self.clock.tick()
+        self.delta_time = self.clock.tick(FPS)
 
     def draw(self):
         self.screen.fill(BG_COLOR)
@@ -100,11 +100,12 @@ def on_update_state(data):
             for play in app.players:
                 if play.playername==player['id']:
                     play.lastpos=play.pos
+                    play.currentpos=vec2(int(player['x']),int(player['y']))
                     play.pos=vec2(int(player['x']),int(player['y']))
-                    play.incrementx=play.lastpos[0]-play.pos[0]
+                    play.incrementx=play.currentpos[0]-play.lastpos[0]
                     play.incrementx=play.incrementx/20
-                    play.incrementy=play.lastpos[1]-play.pos[1]
+                    play.incrementy=play.currentpos[1]-play.lastpos[1]
                     play.incrementy=play.incrementy/20
-                    print(play.incrementx,play.incrementy,"increament")
+                    print(play.lastpos,play.currentpos,play.incrementx,play.incrementy,"increament")
                     play.angle=player['angle']
 app.run()

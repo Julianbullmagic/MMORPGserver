@@ -55,6 +55,7 @@ class AnotherPlayerEntity(BaseEntity):
     def __init__(self, app, name, pos, playername):
         super().__init__(app, name)
         self.pos = vec2(pos)
+        self.currentpos = vec2(pos)
         self.lastpos = vec2(pos)
         self.incrementx = 0
         self.incrementy = 0
@@ -65,8 +66,13 @@ class AnotherPlayerEntity(BaseEntity):
         self.screen_pos = vec2(0)
 
     def update(self):
-        currenttime=time.get_ticks()%50
-        hu=vec2(self.lastpos[0]+self.incrementx*currenttime,self.lastpos[1]+self.incrementy*currenttime)
+        currenttime=time.get_ticks()%20
+        print(currenttime,self.incrementx*currenttime,self.lastpos[0])
+        print(self.currentpos)
+        print(self.lastpos[0]+self.incrementx*currenttime)
+        self.pos=vec2(self.currentpos[0],self.currentpos[1])
+        # self.pos=vec2((self.lastpos[0]+self.incrementx*currenttime),(self.lastpos[1]+self.incrementy*currenttime))
+
         # print(currenttime,hu,"yes")
         super().update()
         self.transform()
