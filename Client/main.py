@@ -9,6 +9,15 @@ import sys
 import socketio
 from entity import Entity
 from entity import AnotherPlayerEntity
+import threading
+
+def set_interval(func, sec):
+    def func_wrapper():
+        set_interval(func, sec)
+        func()
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
 
 class App:
     def __init__(self):
@@ -73,8 +82,9 @@ app.player.id=sys.argv[1]
 print('app.player.id', app.player.id)
 sio.emit('player joining', json.dumps({"name":sys.argv[1]}))
 
-@sio.on('getState')
-def on_getting_state():
+set_interval(send_state(), 0.5)
+
+def send_state():
         # print("getting state",app.player.offset,app.player.angle)
         playerdata = {
             "offsetx": app.player.offset[0],
@@ -83,6 +93,8 @@ def on_getting_state():
             "id":app.player.id
                 }
         sio.emit('returning state', json.dumps(playerdata))
+
+
 @sio.on('updateState')
 def on_update_state(data):
         print("updating state")
@@ -103,9 +115,10 @@ def on_update_state(data):
                     play.currentpos=vec2(int(player['x']),int(player['y']))
                     play.pos=vec2(int(player['x']),int(player['y']))
                     play.incrementx=play.currentpos[0]-play.lastpos[0]
-                    play.incrementx=play.incrementx/20
+                    play.incrementx=int(play.incrementx/10)
                     play.incrementy=play.currentpos[1]-play.lastpos[1]
-                    play.incrementy=play.incrementy/20
+                    play.incrementy=int(play.incrementy/10)
+                    play.positiontimer=0
                     print(play.lastpos,play.currentpos,play.incrementx,play.incrementy,"increament")
                     play.angle=player['angle']
 app.run()

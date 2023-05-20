@@ -64,16 +64,14 @@ class AnotherPlayerEntity(BaseEntity):
         self.playername=playername
         self.y_offset = vec2(0, self.attrs['y_offset'])
         self.screen_pos = vec2(0)
+        self.positiontimer=0
 
     def update(self):
-        currenttime=time.get_ticks()%20
-        print(currenttime,self.incrementx*currenttime,self.lastpos[0])
+        self.positiontimer=self.positiontimer+1
         print(self.currentpos)
-        print(self.lastpos[0]+self.incrementx*currenttime)
-        self.pos=vec2(self.currentpos[0],self.currentpos[1])
-        # self.pos=vec2((self.lastpos[0]+self.incrementx*currenttime),(self.lastpos[1]+self.incrementy*currenttime))
-
-        # print(currenttime,hu,"yes")
+        print(self.lastpos[0]+self.incrementx*self.positiontimer)
+        if self.positiontimer<11:
+            self.pos=vec2(self.lastpos[0]+self.incrementx*self.positiontimer,self.lastpos[1]+self.incrementy*self.positiontimer)
         super().update()
         self.transform()
         self.set_rect()

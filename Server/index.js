@@ -4,11 +4,12 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-setInterval(getState, 4000)
+setInterval(sendState, 1000)
 
-function getState(){
-  console.log("getting state",players)
-  io.emit('getState')
+
+function sendState(){
+  console.log("returning state",players)
+  io.emit('updateState',JSON.stringify(players))
 }
 
 let players=[]
@@ -39,8 +40,6 @@ socket.on('returning state', (data) => {
       player.angle=parseddata.angle
     }
   }
-  console.log("returning state",data,players)
-  io.emit('updateState',JSON.stringify(players))
 });
 });
 
