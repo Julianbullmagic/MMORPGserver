@@ -68,9 +68,7 @@ class AnotherPlayerEntity(BaseEntity):
 
     def update(self):
         self.positiontimer=self.positiontimer+1
-        print(self.currentpos)
-        print(self.lastpos[0]+self.incrementx*self.positiontimer)
-        if self.positiontimer<11:
+        if self.positiontimer<16:
             self.pos=vec2(self.lastpos[0]+self.incrementx*self.positiontimer,self.lastpos[1]+self.incrementy*self.positiontimer)
         super().update()
         self.transform()

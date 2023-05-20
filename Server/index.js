@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-setInterval(sendState, 1000)
+setInterval(sendState, 500)
 
 
 function sendState(){

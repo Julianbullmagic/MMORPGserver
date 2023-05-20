@@ -77,15 +77,10 @@ app = App()
 
 sio = socketio.Client()
 sio.connect('https://mmorpgserver.onrender.com/')
-print('my sid is', sio.sid)
 app.player.id=sys.argv[1]
-print('app.player.id', app.player.id)
 sio.emit('player joining', json.dumps({"name":sys.argv[1]}))
 
-set_interval(send_state(), 0.5)
-
-def send_state():
-        # print("getting state",app.player.offset,app.player.angle)
+def sendstate():
         playerdata = {
             "offsetx": app.player.offset[0],
             "offsety": app.player.offset[1],
@@ -94,13 +89,11 @@ def send_state():
                 }
         sio.emit('returning state', json.dumps(playerdata))
 
+set_interval(sendstate, 0.25)
 
 @sio.on('updateState')
 def on_update_state(data):
-        print("updating state")
         tempplayers=json.loads(data)
-        print(tempplayers,"temp players")
-        print(app.players)
         for player in tempplayers:
             if player['id']==app.player.id:
                 continue
@@ -115,10 +108,9 @@ def on_update_state(data):
                     play.currentpos=vec2(int(player['x']),int(player['y']))
                     play.pos=vec2(int(player['x']),int(player['y']))
                     play.incrementx=play.currentpos[0]-play.lastpos[0]
-                    play.incrementx=int(play.incrementx/10)
+                    play.incrementx=int(play.incrementx/15)
                     play.incrementy=play.currentpos[1]-play.lastpos[1]
-                    play.incrementy=int(play.incrementy/10)
+                    play.incrementy=int(play.incrementy/15)
                     play.positiontimer=0
-                    print(play.lastpos,play.currentpos,play.incrementx,play.incrementy,"increament")
                     play.angle=player['angle']
 app.run()
