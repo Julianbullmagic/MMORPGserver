@@ -10,6 +10,8 @@ import socketio
 from entity import Entity
 from entity import AnotherPlayerEntity
 import threading
+import asyncio
+
 
 def set_interval(func, sec):
     def func_wrapper():
@@ -66,19 +68,15 @@ class App:
     def get_time(self):
         self.time = pg.time.get_ticks() * 0.001
 
-    def run(self):
-        while True:
-            self.check_events()
-            self.get_time()
-            self.update()
-            self.draw()
+
 
 app = App()
-
 sio = socketio.Client()
 sio.connect('https://mmorpgserver.onrender.com/')
-app.player.id=sys.argv[1]
-sio.emit('player joining', json.dumps({"name":sys.argv[1]}))
+# app.player.id=sys.argv[1]
+app.player.id="Sam"
+# sio.emit('player joining', json.dumps({"name":sys.argv[1]}))
+sio.emit('player joining', json.dumps({"name":"Sam"}))
 
 def sendstate():
         playerdata = {
@@ -113,4 +111,15 @@ def on_update_state(data):
                     play.incrementy=int(play.incrementy/15)
                     play.positiontimer=0
                     play.angle=player['angle']
-app.run()
+async def main():
+        while True:
+                app.check_events()
+                app.get_time()
+                app.update()
+                app.draw()
+                await asyncio.sleep(0)
+
+
+
+# This is the program entry point:
+asyncio.run(main())
