@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const usersRouter = require("./routes/api/users");
 const config = require('config');
+require('dotenv').config()
 const app = express();
 // Body parser middleware
 app.use(
@@ -12,7 +13,7 @@ app.use(
 );
 app.use(express.json());
 // DB Config
-const db = config.get('mongoURI');
+const db = process.env.MONGO_URI
 // Connect to MongoDB
 mongoose
     .connect(

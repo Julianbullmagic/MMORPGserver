@@ -1,4 +1,3 @@
 {
-    "mongoURI": "mongodb+srv://JBull:Jimp3542!@cluster0.k6i5j.mongodb.net/Community?retryWrites=true&w=majority",
     "secretOrKey": "secret"
 }
